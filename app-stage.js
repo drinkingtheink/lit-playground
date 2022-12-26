@@ -9,6 +9,7 @@ export class AppStage extends LitElement {
         border: solid 1px gray;
         padding: 16px;
         max-width: 800px;
+        margin: 0 auto;
       }
 
       .results {
