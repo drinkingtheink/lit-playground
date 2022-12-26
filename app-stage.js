@@ -10,16 +10,28 @@ export class AppStage extends LitElement {
         max-width: 800px;
       }
 
+      @keyframes slidein {
+        from {
+          margin-bottom: 3rem;
+          opacity: 0;
+        }
+
+        to {
+          margin-bottom: 0.5rem;
+          opacity: 1;
+        }
+      }
+
       .results {
-        list-style: none;
-        padding: none;
-        margin: none;
+        padding: 0; list-style: none;
       }
 
       .result {
         border: 1px solid black;
         padding: 1rem 2rem;
-        margin-bottom: 1rem;
+        margin-bottom: 0.5rem;
+        animation: slidein;
+        animation-duration: 1s;
       }
     `;
   }
@@ -78,8 +90,8 @@ export class AppStage extends LitElement {
         <h2>Comments on Posts (${this._commentsOnPosts.length}):</h2>
         <ul class="comments-on-posts results">
           ${this._commentsOnPosts.map(
-            (item) => html`
-              <li class="result">
+            (item, index) => html`
+              <li class="result" style="animation-delay: 0.${index}s" .key="${index}">
                 <h3><a .href=${item.data?.link_permalink}>${item.data?.title || item.data?.link_title}</a></h3>
                 <p class="comment-body">${item.data?.body}</p>
                 <p>${item.data?.subreddit_name_prefixed}</p>
