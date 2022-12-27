@@ -9,10 +9,20 @@ export class AppStage extends LitElement {
         display: block;
         border: solid 1px gray;
         padding: 1rem 2rem;
-        max-width: 800px;
+        max-width: 1000px;
         margin: 20px auto 0 auto;
         background-color: white;
         border-radius: 10px;
+      }
+
+      .results-stage {
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      .results-stage .left, .results-stage .right {
+        width: 48%;
+        padding: 0 0.5rem;
       }
 
       .results {
@@ -21,7 +31,7 @@ export class AppStage extends LitElement {
 
       .result {
         border: 1px solid black;
-        padding: 1rem 2rem;
+        padding: 0.5rem 1rem;
         margin-bottom: 0.5rem;
         animation: slidein;
         animation-duration: 1s;
@@ -51,6 +61,7 @@ export class AppStage extends LitElement {
       input {
         padding: 0.5rem 1rem;
         min-width: 300px;
+        font-size: 1.25rem;
       }
 
       .previous-search {
@@ -58,6 +69,12 @@ export class AppStage extends LitElement {
         background-color: #eaeaea;
         border-radius: 10px;
         margin-right: 10px;
+      }
+
+      @import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+
+      p, h1, h2, h3, h4 {
+        font-family: 'Ubuntu', sans-serif;
       }
     `;
   }
@@ -123,26 +140,30 @@ export class AppStage extends LitElement {
       </section>
 
       <section class="results-stage">
-        <h2>Comments on Posts (${this._commentsOnPosts.length}):</h2>
-        <ul class="comments-on-posts results">
-          ${this._commentsOnPosts.map(
-            (item, index) => html`
-              <comment-card .index="${index}" .item="${item}"></comment-card>
-              `
-          )}
-        </ul>
+          <div class="left">
+            <h2>Comments on Posts (${this._commentsOnPosts.length}):</h2>
+            <ul class="comments-on-posts results">
+              ${this._commentsOnPosts.map(
+                (item, index) => html`
+                  <comment-card .index="${index}" .item="${item}"></comment-card>
+                  `
+              )}
+            </ul>
+          </div>
 
-        <h2>Posts Created (${this._postsCreated.length}):</h2>
-        <ul class="posts-created results">
-          ${this._postsCreated.map(
-            (item) => html`
-              <li class="result">
-                <h3><a .href=${item.data?.link_permalink}>${item.data?.title || item.data?.link_title}</a></h3>
-                <p>${item.data?.subreddit_name_prefixed}</p>
-                <p class="posted-date">${new Date(item.data?.created_utc).toLocaleString()}</p>
-              </li>`
-          )}
-        </ul>
+          <div class="right">
+            <h2>Posts Created (${this._postsCreated.length}):</h2>
+            <ul class="posts-created results">
+              ${this._postsCreated.map(
+                (item) => html`
+                  <li class="result">
+                    <h3><a .href=${item.data?.link_permalink}>${item.data?.title || item.data?.link_title}</a></h3>
+                    <p>${item.data?.subreddit_name_prefixed}</p>
+                    <p class="posted-date">${new Date(item.data?.created_utc).toLocaleString()}</p>
+                  </li>`
+              )}
+            </ul>
+          </div>
       </section>
     `;
   }
