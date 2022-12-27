@@ -52,6 +52,13 @@ export class AppStage extends LitElement {
         padding: 0.5rem 1rem;
         min-width: 300px;
       }
+
+      .previous-search {
+        padding: 0.5rem 1rem;
+        background-color: #eaeaea;
+        border-radius: 10px;
+        margin-right: 10px;
+      }
     `;
   }
 
@@ -69,10 +76,6 @@ export class AppStage extends LitElement {
       .catch((error) => {
           console.error('Error:', error);
       });
-  }
-
-  _fetchDataWithRecent(term) {
-    this.inputRef.value = term;
   }
 
   static get properties() {
@@ -103,7 +106,7 @@ export class AppStage extends LitElement {
   render() {
     return html`
       <h2>Reddit User Activity Quick Glance:</h2>
-      <input class="search" ${ref(this.inputRef)} @input=${this.changeSearchTerm} placeholder="Enter a username to search for">
+      <input id="search" ${ref(this.inputRef)} @input=${this.changeSearchTerm} placeholder="Enter a username to search for">
       <button @click=${this._fetchData} part="button">
         VROOM
       </button>
@@ -112,9 +115,9 @@ export class AppStage extends LitElement {
         <h3>Recent Searches:</h3>
         ${this._recentSearches.map(
           (item) => html`
-            <button @click=${this._fetchDataWithRecent(item)} >
+            <span class="previous-search">
               ${item}
-            </button>  
+            </span>  
           `
         )}
       </section>
