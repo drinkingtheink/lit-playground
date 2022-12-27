@@ -39,6 +39,19 @@ export class AppStage extends LitElement {
           opacity: 1;
         }
       }
+
+      button {
+        background-color: #FF4500;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 10px;
+      }
+
+      input {
+        padding: 0.5rem 1rem;
+        min-width: 300px;
+      }
     `;
   }
 
@@ -48,7 +61,7 @@ export class AppStage extends LitElement {
       .then(response => response['data'].children || [])
       .then(response => {
           console.log('Success:', response);
-          this._recentSearches.push(this.searchTerm);
+          this._recentSearches.unshift(this.searchTerm);
           this._searchResults = response;
           this._commentsOnPosts = response.filter((result) => result.kind == 't1');
           this._postsCreated = response.filter((result) => result.kind == 't3');
