@@ -1,4 +1,5 @@
 import {LitElement, html, css} from 'lit';
+import {ref, createRef} from 'lit/directives/ref.js';
 import {CommentCard} from './dev/components/comment-card.js';
 
 export class AppStage extends LitElement {
@@ -7,9 +8,11 @@ export class AppStage extends LitElement {
       :host {
         display: block;
         border: solid 1px gray;
-        padding: 16px;
+        padding: 1rem 2rem;
         max-width: 800px;
-        margin: 0 auto;
+        margin: 20px auto 0 auto;
+        background-color: white;
+        border-radius: 10px;
       }
 
       .results {
@@ -45,6 +48,7 @@ export class AppStage extends LitElement {
       .then(response => response['data'].children || [])
       .then(response => {
           console.log('Success:', response);
+          this._recentSearches.push(this.searchTerm);
           this._searchResults = response;
           this._commentsOnPosts = response.filter((result) => result.kind == 't1');
           this._postsCreated = response.filter((result) => result.kind == 't3');
@@ -54,11 +58,16 @@ export class AppStage extends LitElement {
       });
   }
 
+  _fetchDataWithRecent(term) {
+    this.inputRef.value = term;
+  }
+
   static get properties() {
     return {
       _searchResults: {type: Array},
       _commentsOnPosts: {type: Array},
       _postsCreated: {type: Array},
+      _recentSearches: {type: Array},
     };
   }
 
@@ -68,15 +77,34 @@ export class AppStage extends LitElement {
     this._searchResults = [];
     this._commentsOnPosts = [];
     this._postsCreated = [];
+    this._recentSearches = [];
+  }
+
+  inputRef = createRef();
+
+  firstUpdated() {
+    const input = this.inputRef.value;
+    input.focus();
   }
 
   render() {
     return html`
-      <h2>Investigate a Reddit User:</h2>
-      <input @input=${this.changeSearchTerm} placeholder="Enter a username to search for">
+      <h2>Reddit User Activity Quick Glance:</h2>
+      <input class="search" ${ref(this.inputRef)} @input=${this.changeSearchTerm} placeholder="Enter a username to search for">
       <button @click=${this._fetchData} part="button">
         VROOM
       </button>
+
+      <section class="recent-searches">
+        <h3>Recent Searches:</h3>
+        ${this._recentSearches.map(
+          (item) => html`
+            <button @click=${this._fetchDataWithRecent(item)} >
+              ${item}
+            </button>  
+          `
+        )}
+      </section>
 
       <section class="results-stage">
         <h2>Comments on Posts (${this._commentsOnPosts.length}):</h2>
