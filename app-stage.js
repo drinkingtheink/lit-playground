@@ -2,6 +2,8 @@ import {LitElement, html, css} from 'lit';
 import {ref, createRef} from 'lit/directives/ref.js';
 import {CommentCard} from './dev/components/comment-card.js';
 
+const storageKey = 'recent-searches';
+
 export class AppStage extends LitElement {
   static get styles() {
     return css`
@@ -18,6 +20,7 @@ export class AppStage extends LitElement {
       .results-stage {
         display: flex;
         flex-wrap: wrap;
+        min-height: 200px;
       }
 
       .results-stage .left, .results-stage .right {
@@ -86,6 +89,8 @@ export class AppStage extends LitElement {
       .then(response => {
           console.log('Success:', response);
           this._recentSearches.unshift(this.searchTerm);
+          this._dedupeRecentSearches();
+          this._saveRecentSearchesToSessionStorage();
           this._searchResults = response;
           this._commentsOnPosts = response.filter((result) => result.kind == 't1');
           this._postsCreated = response.filter((result) => result.kind == 't3');
@@ -93,6 +98,16 @@ export class AppStage extends LitElement {
       .catch((error) => {
           console.error('Error:', error);
       });
+  }
+
+  _saveRecentSearchesToSessionStorage() {
+    sessionStorage.removeItem(storageKey);
+    sessionStorage.setItem(storageKey, this._recentSearches);
+  }
+
+  _dedupeRecentSearches() {
+    const uniqueSearches = [...new Set(this._recentSearches)];
+    this._recentSearches = uniqueSearches;
   }
 
   static get properties() {
@@ -116,6 +131,14 @@ export class AppStage extends LitElement {
   inputRef = createRef();
 
   firstUpdated() {
+    let recentSearchesFromStorage = sessionStorage.getItem(storageKey);
+
+    if (recentSearchesFromStorage !== null) {
+      const formattedResults = recentSearchesFromStorage.split(',')
+      const uniqueResults = [...new Set(formattedResults)];
+      this._recentSearches = uniqueResults;
+    }
+
     const input = this.inputRef.value;
     input.focus();
   }
@@ -141,7 +164,7 @@ export class AppStage extends LitElement {
 
       <section class="results-stage">
           <div class="left">
-            <h2>Comments on Posts (${this._commentsOnPosts.length}):</h2>
+            <h2>Comments on Posts (${this._commentsOnPosts.length || 'N/A'}):</h2>
             <ul class="comments-on-posts results">
               ${this._commentsOnPosts.map(
                 (item, index) => html`
@@ -152,7 +175,7 @@ export class AppStage extends LitElement {
           </div>
 
           <div class="right">
-            <h2>Posts Created (${this._postsCreated.length}):</h2>
+            <h2>Posts Created (${this._postsCreated.length || 'N/A'}):</h2>
             <ul class="posts-created results">
               ${this._postsCreated.map(
                 (item) => html`
