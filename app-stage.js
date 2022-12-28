@@ -33,12 +33,12 @@ export class AppStage extends LitElement {
       }
 
       .result {
-        border: 1px solid black;
+        border: 1px solid #ccc;
         padding: 0.5rem 1rem;
         margin-bottom: 0.5rem;
         animation: slidein;
         animation-duration: 1s;
-        border-radius: 20px;
+        border-radius: 10px;
       }
 
       @keyframes slidein {
@@ -76,7 +76,7 @@ export class AppStage extends LitElement {
 
       @import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
 
-      p, h1, h2, h3, h4 {
+      p, h1, h2, h3, h4, span {
         font-family: 'Ubuntu', sans-serif;
       }
     `;
@@ -164,7 +164,7 @@ export class AppStage extends LitElement {
 
       <section class="results-stage">
           <div class="left">
-            <h2>Comments on Posts (${this._commentsOnPosts.length || 'N/A'}):</h2>
+            <h2>Comments on Posts (${this._commentsOnPosts.length}):</h2>
             <ul class="comments-on-posts results">
               ${this._commentsOnPosts.map(
                 (item, index) => html`
@@ -175,7 +175,7 @@ export class AppStage extends LitElement {
           </div>
 
           <div class="right">
-            <h2>Posts Created (${this._postsCreated.length || 'N/A'}):</h2>
+            <h2>Posts Created (${this._postsCreated.length}):</h2>
             <ul class="posts-created results">
               ${this._postsCreated.map(
                 (item) => html`

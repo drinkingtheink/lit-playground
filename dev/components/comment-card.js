@@ -4,12 +4,12 @@ import {LitElement, html, css} from 'lit';
    static get styles() {
      return css`
       .comment-result {
-        border: 1px solid black;
+        border: 1px solid #ccc;
         padding: 1rem 2rem;
         margin-bottom: 0.5rem;
         animation: slidein;
         animation-duration: 1s;
-        border-radius: 20px;
+        border-radius: 10px;
       }
 
       @keyframes slidein {
