@@ -36,6 +36,12 @@ import {LitElement, html, css} from 'lit';
       .meta p {
         margin-right: 20px;
       }
+
+      @import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+
+      p, h1, h2, h3, h4, span {
+        font-family: 'Ubuntu', sans-serif;
+      }
      `;
    }
  
