@@ -1,4 +1,12 @@
-# LitElement JavaScript starter
+# Reddit User at a Glance
+
+### Using LitElement JavaScript starter
+
+<img width="1217" alt="Screen Shot 2023-01-19 at 6 46 01 PM" src="https://user-images.githubusercontent.com/7086049/213594102-32023225-1812-4ae0-a7b7-64ad4e5b3553.png">
+
+See recent activity from any Redditor at a quick glance. Will return the 25 most recent Posts or Comments by that user.
+
+-----------------------------------------
 
 This project includes a sample component using LitElement with JavaScript.
 
